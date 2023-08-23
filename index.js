@@ -43,16 +43,21 @@ app.get("/api/:date?",function(req,res){
       });
     }
       else{
-        const addedDate=new Date(newDate+86400000);
-        const d= new Date(addedDate);
-        
-        if(d.getUTCHours()>0 || addedDate.getUTCMinutes()>0 || addedDate.getUTCSeconds()>0)
+        const array=date.split("-");
+        for(let i=0;i<array.length;i++)
         {
-          d.setUTCHours(0);
-          d.setUTCMinutes(0);
-          d.setUTCSeconds(0);
+          array[i]=array[i].trim();
         }
-        
+        if(array[1]===undefined || array[1]=="")
+        {
+          array[1]="01";
+        }
+        if(array[2]===undefined || array[2]=="")
+        {
+          array[2]="01";
+        }
+        const da=array[0]+"-"+array[1]+"-"+array[2]
+        const d= new Date(da);
         res.send({
           "unix":d.getTime(),
           "utc": d.toUTCString()
